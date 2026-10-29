@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Client Portal | SNUPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root{ --ink:#000000; --paper:#FFFFFF; --paper-alt:#F2F2F2; --graphite:#555555; --hairline:#D9D9D9; --hairline-strong:#B5B5B5; --ok:#1a6b2e; --bad:#b3261e; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#FFFFFF; --paper:#000000; --paper-alt:#141414; --graphite:#A8A8A8; --hairline:#2E2E2E; --hairline-strong:#4A4A4A; --ok:#5fd07a; --bad:#ff7b72; } }
+  *,*::before,*::after{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh; line-height:1.55;}
+  .wrap{max-width:760px; margin:0 auto; padding:44px 22px 80px;}
+  .logo{height:30px; display:block; margin-bottom:26px;}
+  .back{display:inline-block; margin-bottom:22px; font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); text-decoration:none;}
+  .back:hover{color:var(--ink);}
+  .eyebrow{font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--graphite);}
+  h1{font-family:'Fraunces',serif; font-weight:700; font-size:2rem; margin:14px 0 0; line-height:1.15;}
+  h2{font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; margin:0;}
+  .lede{margin-top:12px; color:var(--graphite);}
+
+  .box{border:1px solid var(--hairline); padding:30px; margin-top:28px; position:relative; background:var(--paper);}
+  .corner{position:absolute; width:20px; height:20px; border-color:var(--ink);}
+  .tl{top:-1px;left:-1px;border-top:2px solid;border-left:2px solid;}
+  .br{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid;}
+
+  label{display:block; font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--graphite); margin-bottom:6px;}
+  input[type=text],input[type=email],input[type=tel],input[type=password],select{width:100%; border:none; border-bottom:1px solid var(--hairline-strong); background:transparent; padding:11px 2px; font-size:1rem; color:var(--ink); margin-bottom:20px; font-family:'Inter',sans-serif; border-radius:0;}
+  input:focus,select:focus{outline:none; border-color:var(--ink);}
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:14px 22px; background:var(--ink); color:var(--paper); border:1px solid var(--ink); font-weight:600; font-size:.92rem; cursor:pointer; border-radius:2px; font-family:'Inter',sans-serif; text-decoration:none;}
+  .btn:hover{opacity:.9;}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .btn.ghost{background:transparent; color:var(--ink);}
+  .btn.wa{background:#25D366; border-color:#25D366; color:#0B1A0F;}
+  .btn.block{width:100%;}
+  .msg{display:none; font-size:.88rem; margin:14px 0 0;}
+  .msg.err{color:var(--bad);} .msg.ok{color:var(--ok);}
+  .link{font-size:.84rem; color:var(--graphite); cursor:pointer; text-decoration:underline; background:none; border:none; padding:0; font-family:inherit;}
+  .check{display:flex; gap:10px; align-items:flex-start; margin:4px 0 20px; font-size:.9rem; color:var(--graphite);}
+  .check input{margin-top:4px; width:auto;}
+
+  .tabs{display:flex; gap:0; border-bottom:1px solid var(--hairline); overflow-x:auto; margin-top:28px;}
+  .tab{padding:12px 18px; font-family:'Inter',sans-serif; font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); cursor:pointer; border:none; background:none; border-bottom:2px solid transparent; white-space:nowrap;}
+  .tab.on{color:var(--ink); border-bottom-color:var(--ink);}
+  .authtabs .tab{flex:1; text-align:center;}
+  .panel{display:none; margin-top:24px;}
+  .panel.on{display:block;}
+
+  .svc{border:1px solid var(--hairline); padding:22px; margin-bottom:14px;}
+  .svc .top{display:flex; justify-content:space-between; gap:14px; align-items:flex-start;}
+  .svc h3{margin:0; font-family:'Fraunces',serif; font-size:1.15rem;}
+  .svc p{margin:8px 0 0; color:var(--graphite); font-size:.92rem;}
+  .price{font-family:'Inter',sans-serif; font-size:.86rem; white-space:nowrap;}
+  .meta{font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.05em; text-transform:uppercase; color:var(--graphite); margin-top:10px;}
+  .svc .btn{margin-top:16px;}
+
+  .chip{display:inline-block; font-family:'Inter',sans-serif; font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border:1px solid var(--ink);}
+  .chip.paid{background:var(--ink); color:var(--paper);}
+  .order{border:1px solid var(--hairline); padding:20px; margin-bottom:12px;}
+  .order .row{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;}
+  .order .ref{font-family:'Inter',sans-serif; font-size:.74rem; color:var(--graphite);}
+  .kv{margin-top:18px; padding-top:16px; border-top:1px solid var(--hairline);}
+  .kv:first-child{border-top:none; padding-top:0; margin-top:0;}
+  .kv .k{font-family:'Inter',sans-serif; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite);}
+  .kv .v{margin-top:4px;}
+  .empty{color:var(--graphite); font-size:.94rem; padding:18px 0;}
+
+  .topline{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+
+  #modal{position:fixed; inset:0; background:rgba(19,19,17,.55); display:none; align-items:flex-start; justify-content:center; padding:30px 16px; overflow-y:auto; z-index:50;}
+  #modal.on{display:flex;}
+  .sheet{background:var(--paper); max-width:560px; width:100%; padding:30px; border:1px solid var(--ink); position:relative;}
+  .sheet .x{position:absolute; top:12px; right:16px; cursor:pointer; font-size:1.4rem; background:none; border:none; color:var(--graphite);}
+  .paybox{border:1px solid var(--hairline); padding:14px 16px; margin:10px 0; font-size:.9rem;}
+  .paybox b{display:block; font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); margin-bottom:4px; font-weight:500;}
+  .refbig{font-family:'Inter',sans-serif; font-size:1.2rem; letter-spacing:.08em; padding:12px; background:var(--paper-alt); text-align:center; margin:10px 0;}
+  .terms{font-size:.9rem; color:var(--graphite);}
+  .terms h4{margin:18px 0 4px; color:var(--ink); font-family:'Fraunces',serif; font-size:1rem;}
+  #appView{display:none;}
+
+  /* ===== SNUPA site theme: black & white, rounded, Inter + Fraunces ===== */
+  :root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{-webkit-font-smoothing:antialiased; line-height:1.6;}
+  .brand{display:inline-flex; align-items:center; gap:10px; font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:1.25rem; letter-spacing:.04em; color:var(--ink); text-decoration:none; margin-bottom:22px;}
+  .brand img{width:34px; height:34px; border-radius:6px; display:block;}
+  .back{display:block; margin-bottom:22px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); text-decoration:none; font-weight:500;}
+  .back:hover{color:var(--ink);}
+  .corner{display:none !important;}
+  .box,.svc,.order,.paybox,.sheet{border-radius:12px;}
+  .box,.sheet{border-color:var(--hairline);}
+  .refbig{border-radius:8px;}
+  input[type=text],input[type=email],input[type=tel],input[type=password],input[type=number],select,textarea{border:1px solid var(--hairline-strong) !important; border-radius:8px; padding:11px 12px !important; background:var(--paper);}
+  input:focus,select:focus,textarea:focus{border-color:var(--ink) !important; outline:none;}
+  .btn,button.secondary,.wrap > button,.box > button,#adminApp button{border-radius:8px;}
+  .chip,.status-pill{border-radius:999px;}
+  .tab{border-radius:0;}
+  .btn.wa{background:#25D366; border-color:#25D366; color:#0B1A0F;}
+  .flag{color:var(--bad);}
+  .eyebrow{font-weight:600; color:var(--graphite);}
+  h1,h2,h3{letter-spacing:-.01em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="index.html"><img src="data:image/png;base64,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" alt="SNUPA logo"><span>SNUPA</span></a>
+  <a class="back" href="index.html">&larr; Back to website</a>
+
+  <!-- ============ SIGN IN / SIGN UP ============ -->
+  <div id="authView">
+    <span class="eyebrow">Client Portal</span>
+    <h1>Your SNUPA account.</h1>
+    <p class="lede">Create your own account to choose a service, pay online and follow your file. No need to wait for us to set you up.</p>
+
+    <div class="box">
+      <div class="corner tl"></div><div class="corner br"></div>
+      <div class="tabs authtabs" style="margin-top:0;margin-bottom:24px;">
+        <button class="tab on" id="tabLogin" onclick="showTab('login')">Log in</button>
+        <button class="tab" id="tabSignup" onclick="showTab('signup')">Create account</button>
+      </div>
+
+      <div id="loginForm">
+        <label for="liEmail">Email</label>
+        <input type="email" id="liEmail" autocomplete="username">
+        <label for="liPw">Password</label>
+        <input type="password" id="liPw" autocomplete="current-password">
+        <button class="btn block" id="liBtn" onclick="doLogin()">Log in</button>
+        <div class="msg" id="liMsg"></div>
+        <div style="margin-top:16px;"><button class="link" onclick="resetPw(false)">Forgot password?</button></div>
+      </div>
+
+      <div id="signupForm" style="display:none;">
+        <label for="suName">Full name</label>
+        <input type="text" id="suName" autocomplete="name">
+        <label for="suPhone">Phone / WhatsApp</label>
+        <input type="tel" id="suPhone" autocomplete="tel" placeholder="+267 ...">
+        <label for="suEmail">Email</label>
+        <input type="email" id="suEmail" autocomplete="email">
+        <label for="suPw">Password (at least 8 characters)</label>
+        <input type="password" id="suPw" autocomplete="new-password">
+        <label for="suPw2">Confirm password</label>
+        <input type="password" id="suPw2" autocomplete="new-password">
+        <div class="check">
+          <input type="checkbox" id="suTerms">
+          <span>I have read and agree to the <button class="link" onclick="openTerms()">Terms &amp; Conditions</button> and Privacy Notice.</span>
+        </div>
+        <button class="btn block" id="suBtn" onclick="doSignup()">Create my account</button>
+        <div class="msg" id="suMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SIGNED-IN APP ============ -->
+  <div id="appView">
+    <div class="topline">
+      <div>
+        <span class="eyebrow">Client Portal</span>
+        <h1 id="hello">Hello.</h1>
+      </div>
+      <button class="btn ghost" onclick="doLogout()">Log out</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="services" onclick="goTab('services')">Services</button>
+      <button class="tab" data-tab="orders" onclick="goTab('orders')">My Orders</button>
+      <button class="tab" data-tab="file" onclick="goTab('file')">My File</button>
+      <button class="tab" data-tab="account" onclick="goTab('account')">Account</button>
+    </div>
+
+    <div class="panel on" id="p-services">
+      <p class="lede" style="margin-top:0;">Pick the service you need. You'll see the payment options before anything is final.</p>
+      <div id="svcList" style="margin-top:20px;"></div>
+    </div>
+
+    <div class="panel" id="p-orders"><div id="orderList"></div></div>
+
+    <div class="panel" id="p-file">
+      <div class="box" style="margin-top:0;">
+        <div class="corner tl"></div><div class="corner br"></div>
+        <div id="fileBody"><div class="empty">Loading…</div></div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-account">
+      <div class="box" style="margin-top:0;">
+        <div class="corner tl"></div><div class="corner br"></div>
+        <label for="acName">Full name</label>
+        <input type="text" id="acName">
+        <label for="acPhone">Phone / WhatsApp</label>
+        <input type="tel" id="acPhone">
+        <div class="kv"><div class="k">Email</div><div class="v" id="acEmail">—</div></div>
+        <div class="kv"><div class="k">Terms accepted</div><div class="v" id="acTerms">—</div></div>
+        <div style="margin-top:22px; display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn" onclick="saveProfile()">Save details</button>
+          <button class="btn ghost" onclick="resetPw(true)">Change password</button>
+        </div>
+        <div class="msg" id="acMsg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="sheet"><button class="x" onclick="closeModal()" aria-label="Close">&times;</button><div id="modalBody"></div></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, where, getDocs }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_mM771NdnteU7vnt8b1KYzq1nm_Ju1v0",
+    authDomain: "snupa-portal.firebaseapp.com",
+    projectId: "snupa-portal",
+    storageBucket: "snupa-portal.firebasestorage.app",
+    messagingSenderId: "627096618074",
+    appId: "1:627096618074:web:985447b25e98658cd78463"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  /* ================= EDIT THESE ================= */
+  const WHATSAPP = "26774098526";
+  const TERMS_VERSION = "2026-10";
+
+  // price: a number in Pula (e.g. 1500) or null to show "Request a quote".
+  // cardLink: your DPO / card payment link for that service (leave '' until you have one).
+  const SERVICES = [
+    { id:'certificate-incorporation', name:'Certificate of Incorporation', desc:'Register your company and receive your CIPA certificate of incorporation.', time:'', price:900, cardLink:'' },
+    { id:'company-changes', name:'Share / director / shareholder change', desc:'Update your shares, directors or shareholders on the CIPA record.', time:'', price:315, cardLink:'' },
+    { id:'secretary-appointment', name:'Secretary appointment', desc:'Appoint a company secretary on the CIPA record.', time:'', price:450, cardLink:'' },
+    { id:'constitution-edit', name:'Constitution editing & upload', desc:'Editing your company constitution and uploading it to CIPA.', time:'', price:675, cardLink:'' },
+    { id:'tax-registration', name:'Tax registration (BURS)', desc:'Register your company or yourself for tax with BURS.', time:'', price:675, cardLink:'' },
+    { id:'tcc-renewal', name:'Tax clearance certificate renewal', desc:'Renew your BURS tax clearance certificate.', time:'', price:900, cardLink:'' },
+    { id:'tax-compliance-fix', name:'Fix a tax compliance report', desc:'Correct your tax compliance report so it is clean again.', time:'', price:1350, cardLink:'' },
+    { id:'bank-account', name:'Bank account opening', desc:'Help opening your business bank account.', time:'', price:675, cardLink:'' },
+    { id:'trading-residential', name:'Trading licence - residential', desc:'Trading licence for a business run from a residential property.', time:'', price:2250, cardLink:'' },
+    { id:'trading-commercial', name:'Trading licence - commercial', desc:'Trading licence for a business in commercial premises.', time:'', price:4050, cardLink:'' },
+    { id:'industrial-licence', name:'Industrial licence', desc:'Industrial licence application.', time:'', price:4950, cardLink:'' },
+    { id:'manufacturing-licence', name:'Manufacturing licence', desc:'Manufacturing licence application.', time:'', price:9000, cardLink:'' },
+    { id:'ppra-registration', name:'PPRA registration', desc:'Register with PPRA so you can bid for government tenders.', time:'', price:450, cardLink:'' },
+    { id:'subcodes-supplies', name:'Supplies tendering subcodes', desc:'Add supplies subcodes to your registration.', time:'', price:900, cardLink:'' },
+    { id:'subcodes-services', name:'Services tendering subcodes', desc:'Add services subcodes to your registration.', time:'', price:900, cardLink:'' },
+    { id:'subcodes-consultancy', name:'Consultancy tendering subcodes', desc:'Add consultancy subcodes to your registration.', time:'', price:2250, cardLink:'' },
+    { id:'subcodes-construction', name:'Construction tendering subcodes', desc:'Add construction subcodes to your registration.', time:'', price:2250, cardLink:'' },
+    { id:'subcodes-engineering', name:'Engineering tendering subcodes', desc:'Add engineering subcodes to your registration.', time:'', price:3150, cardLink:'' },
+    { id:'logo', name:'Logo', desc:'A custom logo for your business.', time:'', price:450, cardLink:'' },
+    { id:'company-profile', name:'Company profile', desc:'A professional company profile for clients and tenders.', time:'', price:675, cardLink:'' }
+  ];
+
+  // Add your real payment details. A method with empty details is NOT shown to clients.
+  const PAY_METHODS = [
+    { id:'bank',   label:'Bank transfer / EFT', details:'FNBB · Account name: Othusitse John · Account no: 63197848212 · Branch: Palapye Branch' },   // e.g. "FNB · Account name: ... · Account no: ... · Branch: ..."
+    { id:'orange', label:'Orange Money',        details:'Send to 74489718 (Othusitse Saone John)' },   // e.g. "Send to 7X XXX XXX (Name)"
+    { id:'myzaka', label:'Mascom MyZaka',       details:'Send to 74098526 (John Othusitse)' },
+    { id:'smega',  label:'BTC Smega',           details:'' }
+  ];
+  /* ============================================== */
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const money = n => 'P ' + Number(n).toLocaleString('en-US');
+  const waLink = text => 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+
+  let currentUser = null, profile = null, orders = [], signingUp = false;
+
+  function msg(id, text, ok){
+    const el = $(id); el.textContent = text; el.className = 'msg ' + (ok ? 'ok' : 'err'); el.style.display = 'block';
+  }
+  function clearMsgs(){ ['liMsg','suMsg','acMsg'].forEach(i => { $(i).style.display = 'none'; }); }
+  function friendly(e){
+    switch(e && e.code){
+      case 'auth/email-already-in-use': return 'That email already has an account. Log in instead, or use Forgot password.';
+      case 'auth/weak-password': return 'Please choose a stronger password (at least 8 characters).';
+      case 'auth/invalid-email': return 'That email address does not look right.';
+      case 'auth/invalid-credential':
+      case 'auth/wrong-password':
+      case 'auth/user-not-found': return 'Wrong email or password.';
+      case 'auth/too-many-requests': return 'Too many attempts. Wait a few minutes or reset your password.';
+      case 'auth/network-request-failed': return 'No internet connection. Please try again.';
+      default: return 'Something went wrong (' + ((e && (e.code || e.message)) || 'unknown') + ').';
+    }
+  }
+
+  /* ---------- auth ---------- */
+  window.showTab = t => {
+    $('tabLogin').classList.toggle('on', t === 'login');
+    $('tabSignup').classList.toggle('on', t === 'signup');
+    $('loginForm').style.display = t === 'login' ? 'block' : 'none';
+    $('signupForm').style.display = t === 'signup' ? 'block' : 'none';
+    clearMsgs();
+  };
+
+  window.doLogin = async () => {
+    const email = $('liEmail').value.trim(), pw = $('liPw').value;
+    if(!email || !pw) return msg('liMsg', 'Enter your email and password.');
+    $('liBtn').disabled = true;
+    try{ await signInWithEmailAndPassword(auth, email, pw); }
+    catch(e){ msg('liMsg', friendly(e)); }
+    finally{ $('liBtn').disabled = false; }
+  };
+
+  window.doSignup = async () => {
+    const name = $('suName').value.trim(), phone = $('suPhone').value.trim(), email = $('suEmail').value.trim();
+    const pw = $('suPw').value, pw2 = $('suPw2').value;
+    if(!name || !phone || !email || !pw) return msg('suMsg', 'Please fill in every field.');
+    if(pw.length < 8) return msg('suMsg', 'Your password must be at least 8 characters.');
+    if(pw !== pw2) return msg('suMsg', 'The two passwords do not match.');
+    if(!$('suTerms').checked) return msg('suMsg', 'Please accept the Terms & Conditions to continue.');
+    $('suBtn').disabled = true;
+    signingUp = true;
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, email, pw);
+      currentUser = cred.user;
+      const p = { fullName:name, phone:phone, email:cred.user.email, termsAcceptedAt:new Date().toISOString(), termsVersion:TERMS_VERSION };
+      await setDoc(doc(db, 'profiles', cred.user.uid), p);
+      profile = p;
+      signingUp = false;
+      await enterApp();
+    }catch(e){
+      signingUp = false;
+      msg('suMsg', friendly(e));
+      if(auth.currentUser){ currentUser = auth.currentUser; await enterApp(); }
+    }finally{ $('suBtn').disabled = false; }
+  };
+
+  window.resetPw = async fromApp => {
+    const id = fromApp ? 'acMsg' : 'liMsg';
+    const email = fromApp ? (currentUser && currentUser.email) : $('liEmail').value.trim();
+    if(!email) return msg(id, 'Type your email above first, then tap Forgot password.');
+    try{
+      await sendPasswordResetEmail(auth, email);
+      msg(id, 'A password reset link was sent to ' + email + '. Check your inbox and spam folder.', true);
+    }catch(e){ msg(id, friendly(e)); }
+  };
+
+  window.doLogout = async () => { await signOut(auth); };
+
+  onAuthStateChanged(auth, async user => {
+    if(user){
+      if(signingUp) return;
+      currentUser = user;
+      await enterApp();
+    }else{
+      currentUser = null; profile = null; orders = [];
+      $('appView').style.display = 'none';
+      $('authView').style.display = 'block';
+      closeModal();
+    }
+  });
+
+  async function enterApp(){
+    $('authView').style.display = 'none';
+    $('appView').style.display = 'block';
+    if(!profile){
+      try{ const s = await getDoc(doc(db, 'profiles', currentUser.uid)); profile = s.exists() ? s.data() : null; }catch(e){ profile = null; }
+    }
+    const first = ((profile && profile.fullName) || '').split(' ')[0];
+    $('hello').textContent = first ? 'Hello, ' + first + '.' : 'Welcome.';
+    renderServices(); renderAccount();
+    await Promise.all([loadOrders(), loadFile()]);
+    goTab('services');
+  }
+
+  window.goTab = t => {
+    document.querySelectorAll('#appView .tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+    ['services','orders','file','account'].forEach(n => $('p-' + n).classList.toggle('on', n === t));
+    window.scrollTo({ top:0 });
+  };
+
+  /* ---------- services ---------- */
+  function renderServices(){
+    $('svcList').innerHTML = SERVICES.map(s => {
+      const priced = typeof s.price === 'number';
+      return '<div class="svc"><div class="top"><h3>' + esc(s.name) + '</h3><span class="price">' + (priced ? money(s.price) : (s.from ? 'From ' + money(s.from) : 'Quote')) + '</span></div>' +
+        '<p>' + esc(s.desc) + '</p>' + (s.time ? '<div class="meta">Typical time: ' + esc(s.time) + '</div>' : '') +
+        '<button class="btn" onclick="openCheckout(\'' + esc(s.id) + '\')">' + (priced ? 'Choose &amp; pay' : 'Request a quote') + '</button></div>';
+    }).join('');
+  }
+
+  window.openCheckout = id => {
+    const s = SERVICES.find(x => x.id === id); if(!s) return;
+    const priced = typeof s.price === 'number';
+    openModal(
+      '<span class="eyebrow">' + (priced ? 'Order summary' : 'Quote request') + '</span>' +
+      '<h2 style="margin-top:10px;">' + esc(s.name) + '</h2>' +
+      '<p class="lede">' + esc(s.desc) + '</p>' +
+      '<div class="kv"><div class="k">' + (priced ? 'Price' : 'Price') + '</div><div class="v">' + (priced ? money(s.price) : (s.from ? 'From ' + money(s.from) + '. ' : '') + 'We will send you a quote after reviewing your needs.') + '</div></div>' +
+      (s.time ? '<div class="kv"><div class="k">Typical time</div><div class="v">' + esc(s.time) + '</div></div>' : '') +
+      '<p class="meta" style="text-transform:none;letter-spacing:0;font-family:Inter,sans-serif;margin-top:18px;">By continuing you confirm you have accepted our <button class="link" onclick="openTerms()">Terms &amp; Conditions</button>. Timelines depend on CIPA, BURS, PPADB and other authorities.</p>' +
+      '<button class="btn block" id="confirmBtn" style="margin-top:18px;" onclick="confirmOrder(\'' + esc(s.id) + '\')">' + (priced ? 'Confirm order' : 'Send quote request') + '</button>' +
+      '<div class="msg" id="coMsg"></div>'
+    );
+  };
+
+  function makeRef(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r = '';
+    for(let i = 0; i < 6; i++) r += chars[Math.floor(Math.random() * chars.length)];
+    return 'SNP-' + r;
+  }
+
+  window.confirmOrder = async id => {
+    const s = SERVICES.find(x => x.id === id); if(!s || !currentUser) return;
+    const priced = typeof s.price === 'number';
+    $('confirmBtn').disabled = true;
+    const order = {
+      uid: currentUser.uid, email: currentUser.email, clientName: (profile && profile.fullName) || '',
+      serviceId: s.id, serviceName: s.name, amount: priced ? s.price : 0, currency: 'BWP',
+      reference: makeRef(), status: priced ? 'Awaiting Payment' : 'Quote Requested', createdAt: new Date().toISOString()
+    };
+    try{
+      const r = await addDoc(collection(db, 'orders'), order);
+      order.id = r.id; orders.unshift(order); renderOrders();
+      if(priced) showPayment(order.id); else showQuoteSent(order);
+    }catch(e){
+      $('confirmBtn').disabled = false;
+      msg('coMsg', 'Could not save your order (' + (e.code || e.message) + '). Please try again or contact us on WhatsApp.');
+    }
+  };
+
+  function showQuoteSent(o){
+    openModal(
+      '<span class="eyebrow">Request received</span><h2 style="margin-top:10px;">Thank you.</h2>' +
+      '<p class="lede">We have your request for <b>' + esc(o.serviceName) + '</b> (ref <b>' + esc(o.reference) + '</b>). We will contact you with a quote. You can also message us now:</p>' +
+      '<a class="btn wa block" style="margin-top:16px;" target="_blank" rel="noopener" href="' + waLink('Hi SNUPA, I requested a quote for ' + o.serviceName + ' (ref ' + o.reference + ').') + '">Chat on WhatsApp</a>'
+    );
+    goTab('orders');
+  }
+
+  /* ---------- payment ---------- */
+  function availableMethods(order){
+    const s = SERVICES.find(x => x.id === order.serviceId);
+    const list = PAY_METHODS.filter(m => m.details && m.details.trim());
+    return { list: list, cardLink: (s && s.cardLink) || '' };
+  }
+
+  window.showPayment = orderId => {
+    const o = orders.find(x => x.id === orderId); if(!o) return;
+    const m = availableMethods(o);
+    let html = '<span class="eyebrow">Payment</span><h2 style="margin-top:10px;">' + esc(o.serviceName) + '</h2>' +
+      '<div class="kv"><div class="k">Amount to pay</div><div class="v" style="font-size:1.4rem;font-family:Fraunces,serif;">' + money(o.amount) + '</div></div>' +
+      '<div class="kv"><div class="k">Your payment reference — use this exactly</div><div class="refbig">' + esc(o.reference) + '</div></div>';
+    if(m.cardLink){
+      html += '<a class="btn block" target="_blank" rel="noopener" href="' + esc(m.cardLink) + '" style="margin-top:6px;">Pay by card (secure checkout)</a>' +
+              '<p class="meta" style="text-transform:none;letter-spacing:0;font-family:Inter,sans-serif;">Use the reference above at checkout, then come back and tap “I have paid”.</p>';
+    }
+    m.list.forEach(p => { html += '<div class="paybox"><b>' + esc(p.label) + '</b>' + esc(p.details) + '</div>'; });
+    if(!m.cardLink && !m.list.length){
+      html += '<p class="lede">Online payment details are being set up. Tap below and we will send you payment details on WhatsApp.</p>' +
+        '<a class="btn wa block" target="_blank" rel="noopener" href="' + waLink('Hi SNUPA, I want to pay for ' + o.serviceName + ' (ref ' + o.reference + ', ' + money(o.amount) + ').') + '">Arrange payment on WhatsApp</a>';
+    }else{
+      const opts = (m.cardLink ? '<option value="card">Card</option>' : '') + m.list.map(p => '<option value="' + esc(p.id) + '">' + esc(p.label) + '</option>').join('');
+      html += '<div class="kv"><div class="k">After paying</div>' +
+        '<label for="pyMethod" style="margin-top:12px;">How did you pay?</label><select id="pyMethod">' + opts + '</select>' +
+        '<label for="pyRef">Transaction ID / receipt number</label><input type="text" id="pyRef" placeholder="From your bank or mobile money SMS">' +
+        '<button class="btn block" id="pyBtn" onclick="submitPayment(\'' + esc(o.id) + '\')">I have paid</button>' +
+        '<div class="msg" id="pyMsg"></div>' +
+        '<p class="meta" style="text-transform:none;letter-spacing:0;font-family:Inter,sans-serif;">We confirm payments manually. Your order moves to <b>Paid</b> once we see the money.</p></div>';
+    }
+    openModal(html);
+  };
+
+  window.submitPayment = async orderId => {
+    const o = orders.find(x => x.id === orderId); if(!o) return;
+    const ref = $('pyRef').value.trim(), method = $('pyMethod').value;
+    if(!ref) return msg('pyMsg', 'Please enter the transaction ID or receipt number.');
+    $('pyBtn').disabled = true;
+    try{
+      await updateDoc(doc(db, 'orders', orderId), { status:'Payment Submitted', paymentRef:ref, paymentMethod:method });
+      o.status = 'Payment Submitted'; o.paymentRef = ref; o.paymentMethod = method;
+      renderOrders();
+      openModal('<span class="eyebrow">Thank you</span><h2 style="margin-top:10px;">Payment submitted.</h2>' +
+        '<p class="lede">We will check it and update your order to <b>Paid</b>. You can follow progress under My Orders.</p>' +
+        '<a class="btn wa block" style="margin-top:16px;" target="_blank" rel="noopener" href="' + waLink('Hi SNUPA, I have paid for ' + o.serviceName + ' (ref ' + o.reference + ', receipt ' + ref + ').') + '">Tell us on WhatsApp</a>');
+      goTab('orders');
+    }catch(e){
+      $('pyBtn').disabled = false;
+      msg('pyMsg', 'Could not save (' + (e.code || e.message) + '). Please try again.');
+    }
+  };
+
+  /* ---------- orders ---------- */
+  async function loadOrders(){
+    try{
+      const snap = await getDocs(query(collection(db, 'orders'), where('uid', '==', currentUser.uid)));
+      orders = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      orders.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+    }catch(e){ orders = []; }
+    renderOrders();
+  }
+  function renderOrders(){
+    if(!orders.length){ $('orderList').innerHTML = '<div class="empty">You have no orders yet. Choose a service under Services to get started.</div>'; return; }
+    $('orderList').innerHTML = orders.map(o => {
+      const paid = ['Paid','In Progress','Completed'].indexOf(o.status) > -1;
+      return '<div class="order"><div class="row"><b>' + esc(o.serviceName) + '</b><span class="chip' + (paid ? ' paid' : '') + '">' + esc(o.status) + '</span></div>' +
+        '<div class="row" style="margin-top:8px;"><span class="ref">' + esc(o.reference) + ' · ' + esc(String(o.createdAt || '').slice(0, 10)) + '</span>' +
+        '<span>' + (o.amount ? money(o.amount) : 'Quote') + '</span></div>' +
+        (o.status === 'Awaiting Payment' ? '<button class="btn" style="margin-top:14px;" onclick="showPayment(\'' + esc(o.id) + '\')">Pay now</button>' : '') +
+        '</div>';
+    }).join('');
+  }
+
+  /* ---------- my file ---------- */
+  async function loadFile(){
+    try{
+      const s = await getDoc(doc(db, 'clients', currentUser.uid));
+      if(s.exists()){
+        const d = s.data();
+        $('fileBody').innerHTML =
+          '<span class="eyebrow">FILE NO. ' + esc(d.fileNo || '—') + '</span><div style="margin-top:12px;"><span class="chip">' + esc(d.status || 'Pending') + '</span></div>' +
+          '<div class="kv"><div class="k">Client</div><div class="v">' + esc(d.clientName || '—') + '</div></div>' +
+          '<div class="kv"><div class="k">Service</div><div class="v">' + esc(d.service || '—') + '</div></div>' +
+          '<div class="kv"><div class="k">Notes</div><div class="v">' + esc(d.notes || 'No notes yet.') + '</div></div>' +
+          '<div class="kv"><div class="k">Last updated</div><div class="v">' + esc(d.lastUpdated || '—') + '</div></div>';
+      }else{
+        $('fileBody').innerHTML = '<div class="empty" style="padding:0;">No file yet. Once we start work on your order, your progress will appear here.</div>';
+      }
+    }catch(e){
+      $('fileBody').innerHTML = '<div class="empty" style="padding:0;">Could not load your file right now.</div>';
+    }
+  }
+
+  /* ---------- account ---------- */
+  function renderAccount(){
+    $('acName').value = (profile && profile.fullName) || '';
+    $('acPhone').value = (profile && profile.phone) || '';
+    $('acEmail').textContent = currentUser ? currentUser.email : '—';
+    $('acTerms').textContent = profile && profile.termsAcceptedAt ? String(profile.termsAcceptedAt).slice(0, 10) + ' (version ' + esc(profile.termsVersion || '') + ')' : '—';
+  }
+  window.saveProfile = async () => {
+    const name = $('acName').value.trim(), phone = $('acPhone').value.trim();
+    if(!name || !phone) return msg('acMsg', 'Name and phone cannot be empty.');
+    if(!profile) return msg('acMsg', 'Your profile could not be found. Please contact SNUPA.');
+    try{
+      await updateDoc(doc(db, 'profiles', currentUser.uid), { fullName:name, phone:phone });
+      profile.fullName = name; profile.phone = phone;
+      $('hello').textContent = 'Hello, ' + name.split(' ')[0] + '.';
+      msg('acMsg', 'Details saved.', true);
+    }catch(e){ msg('acMsg', 'Could not save (' + (e.code || e.message) + ').'); }
+  };
+
+  /* ---------- modal & terms ---------- */
+  function openModal(html){ $('modalBody').innerHTML = html; $('modal').classList.add('on'); }
+  window.closeModal = () => { $('modal').classList.remove('on'); };
+
+  window.openTerms = () => {
+    openModal(
+      '<span class="eyebrow">Version ' + TERMS_VERSION + '</span><h2 style="margin-top:10px;">Terms &amp; Conditions</h2>' +
+      '<div class="terms">' +
+      '<h4>1. Who we are</h4><p>SNUPA is a business consultancy in Palapye, Botswana, offering company registration, company secretarial, licensing, taxation and PPADB services.</p>' +
+      '<h4>2. Our services</h4><p>We prepare and submit applications and filings on your behalf. We are not a government body. Approvals and timelines are decided by authorities such as CIPA, BURS, PPADB and local councils, so the times we quote are estimates, not guarantees.</p>' +
+      '<h4>3. Your responsibilities</h4><p>You must give us true, complete and current information and documents. Delays or rejections caused by missing or incorrect information are not our responsibility.</p>' +
+      '<h4>4. Fees and payment</h4><p>Prices are shown in Pula (BWP). Work normally starts after payment is confirmed. Government or authority fees may be charged separately unless we tell you otherwise in writing. Payments are confirmed manually by SNUPA.</p>' +
+      '<h4>5. Refunds and cancellation</h4><p>You may cancel before work has started and request a refund. Once we have begun work or filed with an authority, fees for work already done are not refundable.</p>' +
+      '<h4>6. Privacy</h4><p>We collect your name, phone, email and the documents you give us only to deliver the services you request and to contact you about them. We do not sell your information. We may share it with authorities and service providers only as needed to complete your application. Your account data is stored with Google Firebase. Contact us to access, correct or delete your information.</p>' +
+      '<h4>7. Liability</h4><p>To the extent allowed by law, our liability is limited to the fees you paid us for the service in question.</p>' +
+      '<h4>8. Changes</h4><p>We may update these terms. The version you accepted is recorded on your account.</p>' +
+      '<h4>9. Contact</h4><p>WhatsApp / phone: +267 74 098 526 or +267 74 489 718. Palapye, Botswana.</p>' +
+      '</div>'
+    );
+  };
+</script>
+</body>
+</html>
