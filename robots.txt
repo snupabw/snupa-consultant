@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Private client areas
+Disallow: /snupa-consultant/portal.html
+Disallow: /snupa-consultant/admin.html
+
+Sitemap: https://snupabw.github.io/snupa-consultant/sitemap.xml

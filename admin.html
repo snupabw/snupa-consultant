@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin | SNUPA</title>
+<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root{ --ink:#000000; --paper:#FFFFFF; --paper-alt:#F2F2F2; --graphite:#555555; --hairline:#D9D9D9; --hairline-strong:#B5B5B5; --ok:#1a6b2e; --bad:#b3261e; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#FFFFFF; --paper:#000000; --paper-alt:#141414; --graphite:#A8A8A8; --hairline:#2E2E2E; --hairline-strong:#4A4A4A; --ok:#5fd07a; --bad:#ff7b72; } }
+  *,*::before,*::after{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh;}
+  .wrap{max-width:1000px; margin:0 auto; padding:50px 24px 80px;}
+  .scroll{overflow-x:auto;}
+  td select{margin:0; padding:6px 4px; font-size:.82rem; border:1px solid var(--hairline-strong); width:auto;}
+  .mini{padding:7px 12px; font-size:.76rem;}
+  .flag{color:var(--bad); font-weight:600;}
+  .logo{height:28px; display:block; margin-bottom:36px;}
+  .eyebrow{font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--graphite);}
+  h1{font-family:'Fraunces',serif; font-weight:700; font-size:1.7rem; margin:12px 0 0;}
+
+  .box{border:1px solid var(--hairline); padding:30px; margin-top:28px;}
+  label{display:block; font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--graphite); margin-bottom:7px;}
+  input,select,textarea{width:100%; border:none; border-bottom:1px solid var(--hairline-strong); background:transparent; padding:10px 2px; font-size:.96rem; color:var(--ink); margin-bottom:18px; font-family:'Inter',sans-serif;}
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--ink);}
+  button{padding:13px 22px; background:var(--ink); color:var(--paper); border:none; font-weight:600; font-size:.88rem; cursor:pointer; border-radius:2px;}
+  button:hover{opacity:.9;}
+  button.secondary{background:transparent; color:var(--ink); border:1px solid var(--ink);}
+  .err{color:var(--bad); font-size:.85rem; margin-top:12px; display:none;}
+  .ok{color:var(--ok); font-size:.85rem; margin-top:12px; display:none;}
+
+  table{width:100%; border-collapse:collapse; margin-top:10px; font-size:.88rem;}
+  th{text-align:left; font-family:'Inter',sans-serif; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); padding:10px 8px; border-bottom:1px solid var(--hairline-strong);}
+  td{padding:10px 8px; border-bottom:1px solid var(--hairline);}
+  tr:hover{background:var(--paper-alt); cursor:pointer;}
+  .status-pill{font-family:'Inter',sans-serif; font-size:.68rem; padding:3px 8px; border:1px solid var(--ink); text-transform:uppercase;}
+
+  #adminApp{display:none;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .small{font-size:.8rem; color:var(--graphite); margin-top:-8px; margin-bottom:16px;}
+  .logout{font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); cursor:pointer;}
+  .logout:hover{color:var(--ink);}
+  .topbar{display:flex; justify-content:space-between; align-items:center;}
+
+  /* ===== SNUPA site theme: black & white, rounded, Inter + Fraunces ===== */
+  :root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{-webkit-font-smoothing:antialiased; line-height:1.6;}
+  .brand{display:inline-flex; align-items:center; gap:10px; font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:1.25rem; letter-spacing:.04em; color:var(--ink); text-decoration:none; margin-bottom:22px;}
+  .brand img{width:34px; height:34px; border-radius:6px; display:block;}
+  .back{display:block; margin-bottom:22px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--graphite); text-decoration:none; font-weight:500;}
+  .back:hover{color:var(--ink);}
+  .corner{display:none !important;}
+  .box,.svc,.order,.paybox,.sheet{border-radius:12px;}
+  .box,.sheet{border-color:var(--hairline);}
+  .refbig{border-radius:8px;}
+  input[type=text],input[type=email],input[type=tel],input[type=password],input[type=number],select,textarea{border:1px solid var(--hairline-strong) !important; border-radius:8px; padding:11px 12px !important; background:var(--paper);}
+  input:focus,select:focus,textarea:focus{border-color:var(--ink) !important; outline:none;}
+  .btn,button.secondary,.wrap > button,.box > button,#adminApp button{border-radius:8px;}
+  .chip,.status-pill{border-radius:999px;}
+  .tab{border-radius:0;}
+  .btn.wa{background:#25D366; border-color:#25D366; color:#0B1A0F;}
+  .flag{color:var(--bad);}
+  .eyebrow{font-weight:600; color:var(--graphite);}
+  h1,h2,h3{letter-spacing:-.01em;}
+
+  /* ===== shared SNUPA site shell ===== */
+  .sitebar{position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:11px 22px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-bottom:1px solid var(--hairline);}
+  .sbrand{display:inline-flex; align-items:center; gap:10px; font-family:'Fraunces',Georgia,serif; font-weight:700; letter-spacing:.03em; font-size:1.15rem;}
+  .sbrand img{width:34px; height:34px; border-radius:8px; display:block;}
+  .sbrand span{display:flex; flex-direction:column; line-height:1;}
+  .sbrand small{font-family:'Inter',sans-serif; font-size:.54rem; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--graphite); margin-top:4px;}
+  .snav{display:flex; align-items:center; gap:22px; font-family:'Inter',sans-serif; font-size:.82rem; font-weight:600;}
+  .snav a{color:var(--graphite); transition:color .2s;}
+  .snav a:hover{color:var(--ink);}
+  .snav a.ext{color:#F0481C;}
+  .sback{display:none; font-family:'Inter',sans-serif; font-size:.74rem; font-weight:600; letter-spacing:.04em; color:var(--graphite);}
+  .digiband{display:flex; align-items:center; gap:14px; border:1px solid var(--hairline); border-radius:12px; padding:13px 16px;
+    margin:26px 0 0; background:var(--paper-alt); transition:border-color .2s, transform .2s;}
+  .digiband:hover{border-color:var(--ink); transform:translateY(-1px);}
+  .digiband .dt{width:36px; height:36px; border-radius:9px; background:#0B0B0C; color:#fff; display:grid; place-items:center;
+    font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:.8rem; flex:none; letter-spacing:.02em;}
+  .digiband .tx{display:flex; flex-direction:column; gap:2px; flex:1; min-width:0;}
+  .digiband .tx b{font-family:'Fraunces',Georgia,serif; font-size:.98rem; letter-spacing:-.01em;}
+  .digiband .tx small{font-size:.76rem; color:var(--graphite); line-height:1.45;}
+  .digiband .go{font-family:'Inter',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#F0481C; white-space:nowrap;}
+  .sfoot{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-top:48px;
+    padding:20px 22px 34px; border-top:1px solid var(--hairline); font-size:.76rem; color:var(--graphite);}
+  .sfoot .links{display:flex; gap:16px; font-weight:600;}
+  .sfoot .links a:hover{color:var(--ink);}
+  @media (max-width:720px){
+    .snav{display:none;}
+    .sback{display:inline;}
+    .sitebar{padding:10px 16px;}
+    .digiband .go{display:none;}
+  }
+</style>
+</head>
+<body>
+<header class="sitebar">
+  <a class="sbrand" href="index.html" aria-label="SNUPA by John — home">
+    <img src="assets/logo.png" alt="" width="34" height="34">
+    <span><b>SNUPA</b><small>by John</small></span>
+  </a>
+  <nav class="snav" aria-label="Site">
+    <a href="index.html">Website</a>
+    <a href="index.html#services">Services &amp; prices</a>
+    <a class="ext" href="https://snupabw.github.io/DIGI-TENDERS/" data-digi target="_blank" rel="noopener">Tender board &nearr;</a>
+  </nav>
+  <a class="sback" href="index.html">&larr; Back to website</a>
+</header>
+<div class="wrap">
+
+  <!-- ADMIN LOGIN -->
+  <div id="loginBox">
+    <span class="eyebrow">Admin</span>
+    <h1>Admin Login</h1>
+    <div class="box">
+      <label>Email</label>
+      <input type="email" id="aEmail" autocomplete="username">
+      <label>Password</label>
+      <input type="password" id="aPassword" autocomplete="current-password">
+      <button onclick="doAdminLogin()">Log In</button>
+      <div class="err" id="aErr"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="adminApp">
+    <div class="topbar">
+      <div>
+        <span class="eyebrow">Admin Dashboard</span>
+        <h1>Client Register</h1>
+      </div>
+      <span class="logout" onclick="doAdminLogout()">Log Out</span>
+    </div>
+
+    <div class="box">
+      <span class="eyebrow">Add / Update a Client</span>
+      <p class="small">Paste the client's Auth UID from Firebase Console → Authentication (after you create their login there first).</p>
+      <label>Client's Firebase UID</label>
+      <input type="text" id="cUid" placeholder="e.g. a1B2c3D4e5F6...">
+      <div class="row2">
+        <div>
+          <label>Client Name</label>
+          <input type="text" id="cName">
+        </div>
+        <div>
+          <label>File No.</label>
+          <input type="text" id="cFileNo" placeholder="2026-014">
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label>Service</label>
+          <input type="text" id="cService" placeholder="Company Registration">
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="cStatus">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Awaiting Documents</option>
+            <option>Filed with CIPA</option>
+            <option>Filed with BURS</option>
+            <option>Completed</option>
+          </select>
+        </div>
+      </div>
+      <label>Status Notes</label>
+      <textarea id="cNotes" rows="3"></textarea>
+      <button onclick="saveClient()">Save Client Record</button>
+      <div class="err" id="saveErr"></div>
+      <div class="ok" id="saveOk">Saved.</div>
+    </div>
+
+    <div class="box">
+      <span class="eyebrow">All Clients</span>
+      <table>
+        <thead><tr><th>File No.</th><th>Name</th><th>Service</th><th>Status</th></tr></thead>
+        <tbody id="clientRows"><tr><td colspan="4" style="color:var(--graphite);">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <span class="eyebrow">Orders &amp; Payments</span>
+      <p class="small">When a client says they paid, check the money arrived in your account, then set the status to <b>Paid</b>. Amounts flagged in red do not match the official price list.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Ref</th><th>Client</th><th>Service</th><th>Amount</th><th>Payment</th><th>Status</th><th></th></tr></thead>
+        <tbody id="orderRows"></tbody>
+      </table></div>
+    </div>
+
+    <div class="box">
+      <span class="eyebrow">Registered Users</span>
+      <p class="small">Click a user to load their ID into the form above, then save their file status.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Accepted terms</th></tr></thead>
+        <tbody id="userRows"></tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<footer class="sfoot">
+  <span>&copy; <span id="yr">2026</span> SNUPA &middot; by John &middot; Palapye, Botswana</span>
+  <span class="links"><a href="index.html#contact">Contact</a><a href="index.html#services">Prices</a><a href="https://wa.me/26774098526" target="_blank" rel="noopener">WhatsApp</a></span>
+</footer>
+
+<script>/* DIGI TENDERS link: change this one line if the domain changes */
+var DIGI_URL = "https://snupabw.github.io/DIGI-TENDERS/";
+document.querySelectorAll('a[data-digi]').forEach(function(a){ a.href = DIGI_URL; });
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, updateDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ====== PASTE YOUR FIREBASE CONFIG HERE (same as portal.html) ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_mM771NdnteU7vnt8b1KYzq1nm_Ju1v0",
+    authDomain: "snupa-portal.firebaseapp.com",
+    projectId: "snupa-portal",
+    storageBucket: "snupa-portal.firebasestorage.app",
+    messagingSenderId: "627096618074",
+    appId: "1:627096618074:web:985447b25e98658cd78463"
+  };
+  // ====== SET YOUR ADMIN EMAIL HERE (must match the rules too) ======
+  const ADMIN_EMAIL = "othusitsejohn36@gmail.com";
+  // =====================================================================
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  // Official prices (Pula). Keep identical to the prices in portal.html. Used to flag tampered order amounts.
+  const PRICES = {
+    // 'company-registration': 1500,
+  };
+  const STATUSES = ['Quote Requested','Awaiting Payment','Payment Submitted','Paid','In Progress','Completed','Cancelled'];
+
+  window.doAdminLogin = async function(){
+    const email = document.getElementById('aEmail').value.trim();
+    const pw = document.getElementById('aPassword').value;
+    const errEl = document.getElementById('aErr');
+    errEl.style.display='none';
+    try{
+      await signInWithEmailAndPassword(auth, email, pw);
+    }catch(e){
+      errEl.textContent = 'Login failed — check your email and password. (' + (e.code || e.message) + ')';
+      errEl.style.display='block';
+    }
+  };
+  window.doAdminLogout = async function(){ await signOut(auth); };
+
+  window.saveClient = async function(){
+    const uid = document.getElementById('cUid').value.trim();
+    const errEl = document.getElementById('saveErr');
+    const okEl = document.getElementById('saveOk');
+    errEl.style.display='none'; okEl.style.display='none';
+    if(!uid){ errEl.textContent='Client UID is required.'; errEl.style.display='block'; return; }
+    try{
+      await setDoc(doc(db, 'clients', uid), {
+        clientName: document.getElementById('cName').value.trim(),
+        fileNo: document.getElementById('cFileNo').value.trim(),
+        service: document.getElementById('cService').value.trim(),
+        status: document.getElementById('cStatus').value,
+        notes: document.getElementById('cNotes').value.trim(),
+        lastUpdated: new Date().toISOString().slice(0,10)
+      });
+      okEl.style.display='block';
+      loadClients();
+    }catch(e){
+      errEl.textContent = 'Save failed: ' + e.message;
+      errEl.style.display='block';
+    }
+  };
+
+  async function loadClients(){
+    const tbody = document.getElementById('clientRows');
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--graphite);">Loading…</td></tr>';
+    try{
+      const snap = await getDocs(collection(db, 'clients'));
+      if(snap.empty){
+        tbody.innerHTML = '<tr><td colspan="4" style="color:var(--graphite);">No clients yet.</td></tr>';
+        return;
+      }
+      let rows = '';
+      snap.forEach(d => {
+        const c = d.data();
+        rows += `<tr onclick="fillForm('${esc(d.id)}')"><td>${esc(c.fileNo||'—')}</td><td>${esc(c.clientName||'—')}</td><td>${esc(c.service||'—')}</td><td><span class="status-pill">${esc(c.status||'—')}</span></td></tr>`;
+      });
+      tbody.innerHTML = rows;
+    }catch(e){
+      tbody.innerHTML = '<tr><td colspan="4" style="color:var(--bad);">Could not load clients.</td></tr>';
+    }
+  }
+
+  window._clientCache = {};
+  window._names = {};
+  window.fillForm = async function(uid){
+    document.getElementById('cUid').value = uid;
+    const name = window._names[uid];
+    if(name){ document.getElementById('cName').value = name; }
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+
+  async function loadOrders(){
+    const tbody = document.getElementById('orderRows');
+    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--graphite);">Loading…</td></tr>';
+    try{
+      const snap = await getDocs(collection(db, 'orders'));
+      if(snap.empty){ tbody.innerHTML = '<tr><td colspan="7" style="color:var(--graphite);">No orders yet.</td></tr>'; return; }
+      const list = snap.docs.map(d => Object.assign({id:d.id}, d.data()));
+      list.sort((a,b) => String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+      list.forEach(o => { window._names[o.uid] = o.clientName || ''; });
+      tbody.innerHTML = list.map(o => {
+        const expected = PRICES[o.serviceId];
+        const mismatch = (typeof expected === 'number') && Number(o.amount) !== expected;
+        const amt = (o.amount ? 'P ' + Number(o.amount).toLocaleString('en-US') : 'Quote') +
+          (mismatch ? ' <span class="flag">≠ list P ' + expected + '</span>' : '');
+        const opts = STATUSES.map(s => '<option' + (s === o.status ? ' selected' : '') + '>' + esc(s) + '</option>').join('');
+        return '<tr style="cursor:default;"><td>' + esc(o.reference) + '<br><span style="color:var(--graphite);font-size:.74rem;">' + esc(String(o.createdAt||'').slice(0,10)) + '</span></td>' +
+          '<td>' + esc(o.clientName||'—') + '<br><span style="color:var(--graphite);font-size:.74rem;">' + esc(o.email||'') + '</span></td>' +
+          '<td>' + esc(o.serviceName) + '</td><td>' + amt + '</td>' +
+          '<td>' + esc(o.paymentMethod||'—') + '<br><span style="color:var(--graphite);font-size:.74rem;">' + esc(o.paymentRef||'') + '</span></td>' +
+          '<td><select id="st_' + esc(o.id) + '">' + opts + '</select></td>' +
+          '<td><button class="mini" onclick="saveOrderStatus(\'' + esc(o.id) + '\')">Save</button> ' +
+          '<button class="mini secondary" onclick="fillForm(\'' + esc(o.uid) + '\')">File</button></td></tr>';
+      }).join('');
+    }catch(e){
+      tbody.innerHTML = '<tr><td colspan="7" style="color:var(--bad);">Could not load orders (' + esc(e.code||e.message) + ').</td></tr>';
+    }
+  }
+
+  window.saveOrderStatus = async function(id){
+    const v = document.getElementById('st_' + id).value;
+    try{ await updateDoc(doc(db, 'orders', id), { status: v }); loadOrders(); }
+    catch(e){ alert('Could not update: ' + (e.code || e.message)); }
+  };
+
+  async function loadProfiles(){
+    const tbody = document.getElementById('userRows');
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--graphite);">Loading…</td></tr>';
+    try{
+      const snap = await getDocs(collection(db, 'profiles'));
+      if(snap.empty){ tbody.innerHTML = '<tr><td colspan="4" style="color:var(--graphite);">No registered users yet.</td></tr>'; return; }
+      tbody.innerHTML = snap.docs.map(d => {
+        const p = d.data();
+        window._names[d.id] = p.fullName || ''; return '<tr onclick="fillForm(\'' + esc(d.id) + '\')"><td>' + esc(p.fullName||'—') + '</td><td>' + esc(p.email||'—') + '</td><td>' + esc(p.phone||'—') + '</td><td>' + esc(String(p.termsAcceptedAt||'').slice(0,10)) + '</td></tr>';
+      }).join('');
+    }catch(e){
+      tbody.innerHTML = '<tr><td colspan="4" style="color:var(--bad);">Could not load users (' + esc(e.code||e.message) + ').</td></tr>';
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    const loginBox = document.getElementById('loginBox');
+    const adminApp = document.getElementById('adminApp');
+    if(user && user.email === ADMIN_EMAIL){
+      loginBox.style.display='none';
+      adminApp.style.display='block';
+      loadClients(); loadOrders(); loadProfiles();
+    } else if(user){
+      document.getElementById('aErr').textContent = 'This account is not authorized as admin.';
+      document.getElementById('aErr').style.display='block';
+      signOut(auth);
+    } else {
+      loginBox.style.display='block';
+      adminApp.style.display='none';
+    }
+  });
+</script>
+</body>
+</html>
